@@ -19,7 +19,7 @@ def double_bottom_border(ws, row):
         ws[f"{col}{row}"].border = Border(bottom=Side(style="double"))
 
 
-def build_excel() -> str:
+def build_excel(vehicle_data: dict) -> str:
     wb = Workbook()
     ws = wb.active
     ws.title = "Quotation"
