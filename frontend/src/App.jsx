@@ -96,7 +96,7 @@ const handleExport = async (format) => {
       format: format === "xlsx" ? "excel" : "pdf"
     };
 
-    const response = await fetch("http://127.0.0.1:8000/generate", {
+    const response = await fetch("https://bmw-offer-backend.onrender.com/generate", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
