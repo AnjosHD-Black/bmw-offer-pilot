@@ -4,6 +4,7 @@ from typing import List
 
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import FileResponse
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
 from vehicle_parser import normalize_vehicle_input
@@ -15,6 +16,20 @@ from excel_builder import build_excel
 # APP
 # ======================================================
 app = FastAPI(title="BMW Offer Pilot API")
+
+# CORS - Erlaube Frontend-Zugriff
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://localhost:5173",
+        "http://localhost:5174", 
+        "http://localhost:5175",
+        "https://*.vercel.app",  # Alle Vercel-Deployments
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
