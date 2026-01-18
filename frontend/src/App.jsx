@@ -9,6 +9,9 @@ import {
 // --- KONSTANTEN & STRUKTUREN ---
 // **********************************************
 
+// Backend URL (wird von .env gelesen, fallback zu localhost)
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:8000';
+
 const DEPARTMENTS = ["MH", "FR", "CG", "JR"];
 const NUMBER_TYPES = ["VIN", "Order NR.", "Proforma Order NR."];
 const PRICE_TYPES_NET = ["NET VEHICLE PRICE", "NET VEHICLE PRICE WHS"];
