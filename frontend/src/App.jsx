@@ -3,13 +3,12 @@ import React, { useState, useMemo, useCallback } from 'react';
 import { 
   Calendar, Code, Check, Truck, 
   X, BookOpen, Send, Zap, FileText, Download, User,
-  Globe, Briefcase, Hash, Info, FileDown
+  Globe, Briefcase, Hash, Info, FileDown, ChevronRight
 } from 'lucide-react'; 
 
 // --- KONSTANTEN & STRUKTUREN ---
 // **********************************************
 
-// Diese Listen bleiben erhalten, da sie die Dropdowns füllen
 const DEPARTMENTS = ["MH", "FR", "CG", "JR"];
 const NUMBER_TYPES = ["VIN", "Order NR.", "Proforma Order NR."];
 const PRICE_TYPES_NET = ["NET VEHICLE PRICE", "NET VEHICLE PRICE WHS"];
@@ -20,13 +19,11 @@ const COUNTRIES = [
   "USA", "China", "Dubai", "Switzerland", "Austria", "Sweden", "Norway"
 ];
 
-// --- LEERE DATENBANKEN ---
-// Hier kannst du später deine eigenen Beschreibungen und Preisregeln einfügen
+// Leere Datenbanken für eigene Erweiterungen
 const OPTION_DESCRIPTIONS = {}; 
-
 const PRICING_DATABASE = {};
 
-// Hilfsfunktion: Preis zum Datum finden (Gibt 0 zurück, da Datenbank leer ist)
+// Hilfsfunktion: Preis zum Datum finden
 const getPriceByDate = (code, dateStr) => {
   const rules = PRICING_DATABASE[code];
   if (!rules) return 0;
@@ -45,7 +42,8 @@ const getPriceByDate = (code, dateStr) => {
 
 export default function App() {
   // --- STATES ---
-  const [prodDate, setProdDate] = useState(new Date().toISOString().split('T')[0]);
+  const today = new Date().toISOString().split('T')[0];
+  const [prodDate, setProdDate] = useState(today);
   const [dept, setDept] = useState(DEPARTMENTS[0]);
   const [numType, setNumType] = useState(NUMBER_TYPES[0]);
   const [numValue, setNumValue] = useState("");
@@ -53,13 +51,13 @@ export default function App() {
   const [priceTypeNet, setPriceTypeNet] = useState(PRICE_TYPES_NET[0]);
   const [priceTypeTotal, setPriceTypeTotal] = useState(PRICE_TYPES_TOTAL[0]);
   
-  const [bulkCodes, setBulkCodes] = useState(''); // Jetzt leer
-  const [extraNotes, setExtraNotes] = useState(''); // XXXL Feld, jetzt leer
+  const [bulkCodes, setBulkCodes] = useState(''); 
+  const [pricedCodes, setPricedCodes] = useState('');
+  const [extraNotes, setExtraNotes] = useState(''); // XXXL Feld
 
-  // Verkäufer-Stammdaten (Platzhalter)
   const salesPerson = { name: "Max Mustermann", id: "ADMIN-01" };
 
-  // --- KALKULATION (für Export) ---
+  // --- KALKULATION (für Export-Protokoll) ---
   const calculation = useMemo(() => {
     const parsedBulk = bulkCodes.split(/\s+/).filter(c => c.trim().length > 0);
     
@@ -75,162 +73,172 @@ export default function App() {
   }, [prodDate, bulkCodes]);
 
   // --- EXPORT FUNKTION ---
-// --- EXPORT FUNKTION (LIVE BACKEND) ---
-const handleExport = async (format) => {
-  try {
-    const payload = {
-      date: prodDate,
-      model: bulkCodes.split(/\s+/)[0] || "",
-      color: bulkCodes.split(/\s+/)[1] || "",
-      interior: bulkCodes.split(/\s+/)[2] || "",
-      all_codes: bulkCodes
-        .split(/\s+/)
-        .map(c => c.trim())
-        .filter(Boolean),
-
-      priced_lines: bulkCodes
-        .split("\n")
-        .map(l => l.trim())
-        .filter(l => /\d+$/.test(l)),
-
-      format: format === "xlsx" ? "excel" : "pdf"
-    };
-
-    const response = await fetch("http://127.0.0.1:8000/generate", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(payload)
-    });
-
-    if (!response.ok) {
-      throw new Error("Backend error");
+  const handleExport = (format) => {
+    const formatCurrency = (val) => new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(val);
+    
+    let content = `BMW ANGEBOTSPROTOKOLL - DATENAUFNAHME\n`;
+    content += `==========================================\n`;
+    content += `PROD-DATUM: ${prodDate} | DEPT: ${dept}\n`;
+    content += `${numType}: ${numValue || 'N/A'} | LAND: ${country}\n`;
+    content += `PREIS-MODUS: ${priceTypeNet} / ${priceTypeTotal}\n`;
+    content += `VERKÄUFER: ${salesPerson.name}\n\n`;
+    content += `EINGEGEBENE OPTIONEN (BULK):\n`;
+    
+    if (calculation.allItems.length === 0) {
+      content += `Keine Optionen eingegeben.\n`;
+    } else {
+      calculation.allItems.forEach(item => {
+        content += `[${item.code}] ${item.name.padEnd(35)} | ${formatCurrency(item.price)}\n`;
+      });
     }
+    
+    content += `\n------------------------------------------\n`;
+    content += `GESAMTSUMME: ${formatCurrency(calculation.total)}\n\n`;
+    
+    content += `\nCODES MIT PREISEN:\n`;
+    if (pricedCodes.trim()) {
+      content += pricedCodes + '\n';
+    } else {
+      content += 'Keine Einträge\n';
+    }
+    
+    content += `\nZUSÄTZLICHE ANMERKUNGEN (XXXL):\n${extraNotes || 'Keine'}\n`;
 
-    const blob = await response.blob();
-    const url = window.URL.createObjectURL(blob);
-
-    const a = document.createElement("a");
+    const mimeType = format === 'xlsx' ? 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' : 'application/pdf';
+    const blob = new Blob([content], { type: mimeType });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
     a.href = url;
-    a.download = `BMW_Quotation_${numValue || "LIVE"}.${format}`;
+    a.download = `BMW_Spec_Export_${numValue || 'Data'}_${prodDate}.${format}`;
     document.body.appendChild(a);
     a.click();
-
     document.body.removeChild(a);
-    window.URL.revokeObjectURL(url);
-
-  } catch (error) {
-    console.error(error);
-    alert("❌ Export fehlgeschlagen – läuft das Backend?");
-  }
-};
+  };
 
   return (
-    <div className="min-h-screen bg-slate-100 font-sans p-4 md:p-8">
-      <div className="max-w-[1400px] mx-auto">
+    <div className="min-h-screen bg-slate-100 font-sans pb-20">
+      
+      {/* Header Bereich */}
+      <nav className="bg-white text-slate-900 h-16 shadow-sm border-b border-slate-200 flex items-center mb-8">
+        <div className="max-w-[1400px] mx-auto w-full px-8 flex justify-between items-center">
+          <div className="flex items-center space-x-4">
+             <div className="w-9 h-9 bg-blue-600 rounded-lg flex items-center justify-center text-white font-semibold text-[10px]">BMW</div>
+             <div className="h-6 w-px bg-slate-200"></div>
+             <span className="text-sm font-semibold text-slate-600">Order Capture v8.0</span>
+          </div>
+          <div className="hidden lg:flex items-center space-x-2 text-slate-600 text-sm">
+            <User size={16} className="text-blue-600" />
+            <span className="font-semibold">{salesPerson.name}</span>
+          </div>
+        </div>
+      </nav>
+
+      <div className="max-w-7xl mx-auto px-6 py-12 md:px-12 md:py-16">
         
-        {/* Header */}
-        <header className="flex flex-col md:flex-row justify-between items-end mb-10 border-b-4 border-black pb-6">
-          <div className="flex items-center space-x-6">
-            <div className="w-20 h-20 bg-white border-4 border-slate-200 rounded-full flex items-center justify-center shadow-lg">
-                <div className="w-14 h-14 bg-blue-700 rounded-full flex items-center justify-center text-white font-black text-[10px] border-4 border-white shadow-inner">BMW</div>
-            </div>
-            <div>
-              <h1 className="text-5xl font-black tracking-tighter text-slate-900 uppercase italic leading-none">Order Entry</h1>
-              <p className="text-slate-500 font-black tracking-widest text-sm uppercase mt-1">Empty Specification Template v5.0</p>
-            </div>
+        {/* Dynamic Title Area */}
+        <header className="mb-10 animate-in slide-in-from-top-4 duration-700">
+          <div className="flex items-center space-x-2 text-slate-600 mb-3 text-xs font-semibold">
+            <span>BMW Group Dashboard</span>
+            <ChevronRight size={14} className="text-slate-400" />
+            <span className="text-slate-500">Specification Capture</span>
           </div>
-          <div className="text-right hidden md:block">
-            <p className="text-xs font-black text-slate-400 uppercase">System Active</p>
-            <p className="text-lg font-black text-slate-800">{salesPerson.name}</p>
-          </div>
+          <h1 className="text-4xl font-semibold text-slate-900 leading-tight">
+            Order Entry System
+          </h1>
         </header>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
           
-          {/* LINKES FELD: Formular */}
+          {/* LINKES FELD: Eingabe-Bereich */}
           <div className="lg:col-span-9 space-y-8">
             
             {/* Sektion 1: Stammdaten */}
-            <div className="bg-white p-8 rounded-3xl shadow-2xl border border-slate-200">
-              <h2 className="text-xs font-black uppercase tracking-[0.3em] text-blue-600 mb-8 flex items-center">
-                <Briefcase className="mr-3" size={18} /> 01. Basis-Spezifikationen
+            <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+              <h2 className="text-sm font-semibold text-blue-600 mb-6 flex items-center">
+                <Briefcase className="mr-2" size={18} />Basis-Spezifikationen
               </h2>
               
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div>
-                  <label className="block text-[10px] font-black text-slate-500 uppercase mb-2 tracking-widest">Produktionsdatum</label>
-                  <div className="relative">
-                    <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
-                    <input type="date" value={prodDate} onChange={(e) => setProdDate(e.target.value)} className="w-full pl-12 pr-4 py-3 bg-slate-50 border-2 border-slate-100 rounded-2xl font-bold text-slate-700 focus:border-blue-500 focus:bg-white transition-all outline-none" />
-                  </div>
+                  <label className="block text-xs font-semibold text-slate-600 mb-2">Produktionsdatum</label>
+                  <input type="date" value={prodDate} onChange={(e) => setProdDate(e.target.value)} className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-lg text-slate-700 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all outline-none" />
                 </div>
 
                 <div>
-                  <label className="block text-[10px] font-black text-slate-500 uppercase mb-2 tracking-widest">Department</label>
-                  <select value={dept} onChange={(e) => setDept(e.target.value)} className="w-full px-4 py-3 bg-slate-50 border-2 border-slate-100 rounded-2xl font-bold text-slate-700 focus:border-blue-500 focus:bg-white transition-all outline-none appearance-none">
+                  <label className="block text-xs font-semibold text-slate-600 mb-2">Department</label>
+                  <select value={dept} onChange={(e) => setDept(e.target.value)} className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-lg text-slate-700 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all outline-none appearance-none">
                     {DEPARTMENTS.map(d => <option key={d} value={d}>{d}</option>)}
                   </select>
                 </div>
 
                 <div>
-                  <label className="block text-[10px] font-black text-slate-500 uppercase mb-2 tracking-widest">Ziel-Land</label>
-                  <div className="relative">
-                    <Globe className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
-                    <select value={country} onChange={(e) => setCountry(e.target.value)} className="w-full pl-12 pr-4 py-3 bg-slate-50 border-2 border-slate-100 rounded-2xl font-bold text-slate-700 focus:border-blue-500 focus:bg-white transition-all outline-none appearance-none">
-                      {COUNTRIES.map(c => <option key={c} value={c}>{c}</option>)}
-                    </select>
-                  </div>
+                  <label className="block text-xs font-semibold text-slate-600 mb-2">Ziel-Land</label>
+                  <select value={country} onChange={(e) => setCountry(e.target.value)} className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-lg text-slate-700 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all outline-none appearance-none">
+                    {COUNTRIES.map(c => <option key={c} value={c}>{c}</option>)}
+                  </select>
                 </div>
               </div>
 
               {/* Identifikation */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8 pt-8 border-t border-slate-100">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6 pt-6 border-t border-slate-100">
                 <div>
-                  <label className="block text-[10px] font-black text-slate-500 uppercase mb-2 tracking-widest">Art der Nummer</label>
-                  <select value={numType} onChange={(e) => setNumType(e.target.value)} className="w-full px-4 py-3 bg-slate-50 border-2 border-slate-100 rounded-2xl font-bold text-slate-700 focus:border-blue-500 focus:bg-white transition-all outline-none">
+                  <label className="block text-xs font-semibold text-slate-600 mb-2">Art der Nummer</label>
+                  <select value={numType} onChange={(e) => setNumType(e.target.value)} className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-lg text-slate-700 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all">
                     {NUMBER_TYPES.map(n => <option key={n} value={n}>{n}</option>)}
                   </select>
                 </div>
                 <div>
-                  <label className="block text-[10px] font-black text-slate-500 uppercase mb-2 tracking-widest">Nummer (max. 10 Stellen)</label>
+                  <label className="block text-xs font-semibold text-slate-600 mb-2">Nummer (max. 10 Stellen)</label>
                   <div className="relative">
-                    <Hash className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
+                    <Hash className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
                     <input 
                       type="text" 
                       maxLength={10} 
                       value={numValue} 
                       onChange={(e) => setNumValue(e.target.value.toUpperCase())} 
                       placeholder="Ident-No."
-                      className="w-full pl-12 pr-4 py-3 bg-slate-50 border-2 border-slate-100 rounded-2xl font-mono font-black text-slate-800 focus:border-blue-500 focus:bg-white transition-all outline-none" 
+                      className="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-lg font-mono text-slate-700 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all outline-none" 
                     />
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* Sektion 2: Bulk Input (Kompakt) */}
-            <div className="bg-white p-8 rounded-3xl shadow-2xl border border-slate-200">
-              <h2 className="text-xs font-black uppercase tracking-[0.3em] text-blue-600 mb-6 flex items-center">
-                <Code size={20} className="mr-3" /> 02. Options-Codes Bulk Input
+            {/* Sektion 2: Bulk Input */}
+            <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+              <h2 className="text-sm font-semibold text-blue-600 mb-4 flex items-center">
+                <Code size={16} className="mr-2" />Options-Codes Bulk Input
               </h2>
               <textarea 
                 rows="5"
                 value={bulkCodes}
                 onChange={(e) => setBulkCodes(e.target.value)}
-                placeholder="Codes hier einfügen (z.B. 1AB 2TC)..."
-                className="w-full bg-slate-900 border-none rounded-2xl p-6 font-mono font-bold text-lg text-blue-400 shadow-inner focus:ring-4 focus:ring-blue-500/30 transition-all outline-none"
+                placeholder="Codes hier einfügen (z.B. 1AB 2TC 3B3)..."
+                className="w-full bg-slate-50 border border-slate-200 rounded-lg p-4 font-mono text-base text-slate-700 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all outline-none leading-relaxed"
               ></textarea>
             </div>
 
-            {/* Sektion 3: Extra Notes (JETZT XXXL) */}
-            <div className="bg-white p-8 rounded-3xl shadow-2xl border border-slate-200">
-              <div className="flex items-center justify-between mb-6">
-                <label className="text-xs font-black uppercase tracking-[0.3em] text-orange-500 flex items-center">
-                  <Info size={20} className="mr-3" /> 03. Zusätzliche technische Hinweise (XXXL)
+            {/* Sektion 2b: Priced Codes */}
+            <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+              <h2 className="text-sm font-semibold text-blue-600 mb-4 flex items-center">
+                <Code size={16} className="mr-2" />Codes mit Preisen
+              </h2>
+              <textarea 
+                rows="6"
+                value={pricedCodes}
+                onChange={(e) => setPricedCodes(e.target.value)}
+                placeholder="Format: CODE Name Price (eine pro Zeile)&#10;1AB Brakes 500&#10;1AC Floor Mats 200&#10;109 Security Package VR6 1000"
+                className="w-full bg-slate-50 border border-slate-200 rounded-lg p-4 font-mono text-base text-slate-700 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all outline-none leading-relaxed"
+              ></textarea>
+            </div>
+
+            {/* Sektion 3: Extra Notes (XXXL) */}
+            <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+              <div className="flex items-center justify-between mb-4">
+                <label className="text-sm font-semibold text-slate-700 flex items-center">
+                  Zusätzliche technische Hinweise (XXXL)
                 </label>
-                <span className="text-[10px] bg-orange-100 text-orange-600 px-3 py-1 rounded-full font-black uppercase tracking-widest">Max Buffer</span>
+                <span className="text-xs bg-blue-50 text-blue-600 px-2 py-1 rounded font-semibold">Large Buffer</span>
               </div>
               
               <textarea 
@@ -238,60 +246,56 @@ const handleExport = async (format) => {
                 value={extraNotes}
                 onChange={(e) => setExtraNotes(e.target.value)}
                 placeholder="Hier hunderte Zeilen technische Daten einfügen..."
-                className="w-full bg-slate-50 border-2 border-slate-100 rounded-[2.5rem] p-8 font-mono text-xs text-slate-600 focus:bg-white transition-all outline-none focus:border-orange-400 leading-relaxed shadow-inner"
+                className="w-full bg-slate-50 border border-slate-200 rounded-lg p-4 font-mono text-sm text-slate-600 focus:bg-white transition-all outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 leading-relaxed"
               ></textarea>
             </div>
           </div>
 
-          {/* RECHTES FELD: Export Sidecenter */}
+          {/* RECHTES FELD: Export Center */}
           <div className="lg:col-span-3 space-y-8">
             
-            <div className="bg-slate-900 p-8 rounded-3xl shadow-2xl text-white border-b-8 border-blue-700 sticky top-8">
-               <h3 className="text-[10px] font-black text-slate-500 uppercase tracking-[0.3em] mb-6">Config & Export</h3>
+            <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200 sticky top-28">
+               <h3 className="text-xs font-semibold text-slate-700 mb-5">Export Configuration</h3>
                
-               <div className="space-y-6 mb-10">
+               <div className="space-y-5 mb-6">
                   <div>
-                    <label className="block text-[9px] font-black text-slate-400 uppercase mb-2 tracking-widest">Net Mode</label>
-                    <select value={priceTypeNet} onChange={(e) => setPriceTypeNet(e.target.value)} className="w-full bg-slate-800 border-2 border-slate-700 rounded-xl p-3 text-xs font-black focus:border-blue-500 outline-none appearance-none">
+                    <label className="block text-xs font-semibold text-slate-600 mb-2">Net Mode</label>
+                    <select value={priceTypeNet} onChange={(e) => setPriceTypeNet(e.target.value)} className="w-full bg-slate-50 border border-slate-200 rounded-lg p-3 text-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none appearance-none transition-all text-slate-700">
                       {PRICE_TYPES_NET.map(p => <option key={p} value={p}>{p}</option>)}
                     </select>
                   </div>
                   <div>
-                    <label className="block text-[9px] font-black text-slate-400 uppercase mb-2 tracking-widest">Total Mode</label>
-                    <select value={priceTypeTotal} onChange={(e) => setPriceTypeTotal(e.target.value)} className="w-full bg-slate-800 border-2 border-slate-700 rounded-xl p-3 text-xs font-black focus:border-blue-500 outline-none appearance-none">
+                    <label className="block text-xs font-semibold text-slate-600 mb-2">Total Mode</label>
+                    <select value={priceTypeTotal} onChange={(e) => setPriceTypeTotal(e.target.value)} className="w-full bg-slate-50 border border-slate-200 rounded-lg p-3 text-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none appearance-none transition-all text-slate-700">
                       {PRICE_TYPES_TOTAL.map(p => <option key={p} value={p}>{p}</option>)}
                     </select>
                   </div>
                </div>
 
-               <div className="flex flex-col space-y-4">
+               <div className="flex flex-col space-y-3">
                   <button 
                     onClick={() => handleExport('pdf')} 
-                    className="group w-full flex items-center justify-between bg-white text-slate-900 p-5 rounded-2xl hover:bg-slate-100 transition-all shadow-lg font-black text-xs uppercase tracking-widest"
+                    className="w-full flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-lg transition-all font-semibold text-sm"
                   >
-                    <div className="flex items-center space-x-3">
-                      <div className="bg-red-500 text-white p-2 rounded-lg"><Download size={18} /></div>
-                      <span>PDF Export</span>
-                    </div>
+                    <Download size={16} />
+                    <span>PDF Protokoll</span>
                   </button>
 
                   <button 
                     onClick={() => handleExport('xlsx')} 
-                    className="group w-full flex items-center justify-between bg-green-600 text-white p-5 rounded-2xl hover:bg-green-700 transition-all shadow-lg font-black text-xs uppercase tracking-widest"
+                    className="w-full flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-lg transition-all font-semibold text-sm"
                   >
-                    <div className="flex items-center space-x-3">
-                      <div className="bg-white/20 p-2 rounded-lg"><FileText size={18} /></div>
-                      <span>Excel Export</span>
-                    </div>
+                    <FileText size={16} />
+                    <span>Excel Export</span>
                   </button>
                </div>
 
-               <div className="mt-8 pt-8 border-t border-slate-800">
-                  <div className="bg-slate-800 p-4 rounded-xl">
-                      <p className="text-[9px] font-black text-slate-500 uppercase mb-2">System Ready</p>
+               <div className="mt-6 pt-6 border-t border-slate-200">
+                  <div className="bg-blue-50 p-3 rounded-lg">
+                      <p className="text-xs font-semibold text-slate-700 mb-2">System Status</p>
                       <div className="flex items-center space-x-2">
-                          <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
-                          <span className="text-[10px] font-bold text-slate-300">Clean Interface Active</span>
+                          <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                          <span className="text-xs text-slate-600">Ready</span>
                       </div>
                   </div>
                </div>
@@ -300,10 +304,10 @@ const handleExport = async (format) => {
 
         </div>
 
-        {/* Footer */}
-        <footer className="mt-20 text-center border-t-2 border-slate-200 pt-10 pb-20">
-          <p className="text-[10px] text-slate-400 font-black uppercase tracking-[0.4em] italic">
-            BMW Group Confidential | Technical Order Capture | {new Date().getFullYear()}
+        {/* Footer Area */}
+        <footer className="mt-20 text-center border-t border-slate-200 pt-10 pb-20">
+          <p className="text-xs text-slate-500 font-semibold">
+            BMW Group Confidential | Technical Capture Environment | {new Date().getFullYear()}
           </p>
         </footer>
       </div>
