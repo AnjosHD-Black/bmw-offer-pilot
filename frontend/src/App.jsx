@@ -73,23 +73,37 @@ export default function App() {
   }, [prodDate, bulkCodes]);
 
   // --- EXPORT FUNKTION ---
-  const handleExport = (format) => {
-    const formatCurrency = (val) => new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(val);
-    
-    let content = `BMW ANGEBOTSPROTOKOLL - DATENAUFNAHME\n`;
-    content += `==========================================\n`;
-    content += `PROD-DATUM: ${prodDate} | DEPT: ${dept}\n`;
-    content += `${numType}: ${numValue || 'N/A'} | LAND: ${country}\n`;
-    content += `PREIS-MODUS: ${priceTypeNet} / ${priceTypeTotal}\n`;
-    content += `VERKÄUFER: ${salesPerson.name}\n\n`;
-    content += `EINGEGEBENE OPTIONEN (BULK):\n`;
-    
-    if (calculation.allItems.length === 0) {
-      content += `Keine Optionen eingegeben.\n`;
-    } else {
-      calculation.allItems.forEach(item => {
-        content += `[${item.code}] ${item.name.padEnd(35)} | ${formatCurrency(item.price)}\n`;
-      });
+// --- EXPORT FUNKTION (LIVE BACKEND) ---
+const handleExport = async (format) => {
+  try {
+    const payload = {
+      date: prodDate,
+      model: bulkCodes.split(/\s+/)[0] || "",
+      color: bulkCodes.split(/\s+/)[1] || "",
+      interior: bulkCodes.split(/\s+/)[2] || "",
+      all_codes: bulkCodes
+        .split(/\s+/)
+        .map(c => c.trim())
+        .filter(Boolean),
+
+      priced_lines: bulkCodes
+        .split("\n")
+        .map(l => l.trim())
+        .filter(l => /\d+$/.test(l)),
+
+      format: format === "xlsx" ? "excel" : "pdf"
+    };
+
+    const response = await fetch("https://bmw-offer-backend.onrender.com/generate", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(payload)
+    });
+
+    if (!response.ok) {
+      throw new Error("Backend error");
     }
     
     content += `\n------------------------------------------\n`;

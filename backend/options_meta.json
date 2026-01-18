@@ -1,0 +1,108 @@
+{
+  "66GR": {
+    "label": "Basic Vehicle X5",
+    "category": "base"
+  },
+
+  "ASS": {
+    "label": "Exterior Color Black",
+    "category": "base"
+  },
+  "AGG": {
+    "label": "Exterior Color Grey",
+    "category": "base"
+  },
+  "ARR": {
+    "label": "Exterior Color Red",
+    "category": "base"
+  },
+
+  "ISS": {
+    "label": "Interior Color Black",
+    "category": "base"
+  },
+  "IBB": {
+    "label": "Interior Color Brown",
+    "category": "base"
+  },
+  "IWW": {
+    "label": "Interior Color White",
+    "category": "base"
+  },
+
+  "4KH": {
+    "label": "Interior Trim Black",
+    "category": "base"
+  },
+  "4JK": {
+    "label": "Interior Trim Carbon",
+    "category": "base"
+  },
+  "4DZ": {
+    "label": "Interior Trim Sand",
+    "category": "base"
+  },
+
+  "1AB": {
+    "label": "Brakes",
+    "category": "standard"
+  },
+  "1AC": {
+    "label": "Floor Mats",
+    "category": "standard"
+  },
+  "1AD": {
+    "label": "Alloy Wheels",
+    "category": "standard"
+  },
+  "1AE": {
+    "label": "Summer Tires",
+    "category": "standard"
+  },
+  "1AF": {
+    "label": "Sun Protection",
+    "category": "standard"
+  },
+  "1AG": {
+    "label": "Sport Seats",
+    "category": "standard"
+  },
+  "1AH": {
+    "label": "Cruise Control",
+    "category": "standard"
+  },
+
+  "2AB": {
+    "label": "Underbody Protection",
+    "category": "security"
+  },
+  "2AC": {
+    "label": "Fire Extinguisher",
+    "category": "security"
+  },
+  "2AD": {
+    "label": "Security Glass",
+    "category": "security"
+  },
+  "2AE": {
+    "label": "Additional Armoring",
+    "category": "security"
+  },
+  "2AF": {
+    "label": "Standard Mounting",
+    "category": "security"
+  },
+
+  "3AB": {
+    "label": "Seat Heating",
+    "category": "optional"
+  },
+  "3AC": {
+    "label": "Auxiliary Heating",
+    "category": "optional"
+  },
+  "3AD": {
+    "label": "M Steering Wheel",
+    "category": "optional"
+  }
+}
