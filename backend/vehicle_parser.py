@@ -14,14 +14,20 @@ def parse_priced_lines(lines: List[str]) -> Dict[str, float]:
     Extrahiert Preise aus z.B.:
     '3AB Sitzheizung 100'
     '3AD M-Lenkrad 3000'
+    
+    Wenn keine Preise angegeben sind, ignoriere die Zeile.
     """
     prices: Dict[str, float] = {}
 
     for line in lines:
         line = line.strip()
+        if not line:
+            continue
+            
         match = PRICE_LINE_REGEX.match(line)
         if not match:
-            raise ValueError(f"Invalid priced line format: {line}")
+            # Keine Fehlermeldung, einfach ignorieren
+            continue
 
         code = match.group("code")
         price = float(match.group("price").replace(",", "."))
