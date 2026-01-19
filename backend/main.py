@@ -35,6 +35,18 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 
 # ======================================================
+# HEALTH CHECK
+# ======================================================
+@app.get("/")
+def health_check():
+    return {
+        "status": "online",
+        "service": "BMW Offer Pilot API",
+        "endpoints": ["/generate", "/debug/parse", "/docs"]
+    }
+
+
+# ======================================================
 # REQUEST SCHEMA
 # ======================================================
 class GenerateRequest(BaseModel):
