@@ -75,8 +75,7 @@ export default function App() {
     return { allItems, total };
   }, [prodDate, bulkCodes]);
 
-  // --- EXPORT FUNKTION ---
-// --- EXPORT FUNKTION (LIVE BACKEND) ---
+  // --- EXPORT FUNKTION (LIVE BACKEND) ---
 const handleExport = async (format) => {
   try {
     const payload = {
@@ -89,10 +88,10 @@ const handleExport = async (format) => {
         .map(c => c.trim())
         .filter(Boolean),
 
-      priced_lines: bulkCodes
+      priced_lines: pricedCodes
         .split("\n")
         .map(l => l.trim())
-        .filter(l => /\d+$/.test(l)),
+        .filter(Boolean),
 
       format: format === "xlsx" ? "excel" : "pdf"
     };
@@ -106,23 +105,13 @@ const handleExport = async (format) => {
     });
 
     if (!response.ok) {
-      throw new Error("Backend error");
+      const errorData = await response.json().catch(() => ({}));
+      console.error('Backend error:', errorData);
+      throw new Error(`Backend error: ${response.status}`);
     }
     
-    content += `\n------------------------------------------\n`;
-    content += `GESAMTSUMME: ${formatCurrency(calculation.total)}\n\n`;
-    
-    content += `\nCODES MIT PREISEN:\n`;
-    if (pricedCodes.trim()) {
-      content += pricedCodes + '\n';
-    } else {
-      content += 'Keine Einträge\n';
-    }
-    
-    content += `\nZUSÄTZLICHE ANMERKUNGEN (XXXL):\n${extraNotes || 'Keine'}\n`;
-
-    const mimeType = format === 'xlsx' ? 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' : 'application/pdf';
-    const blob = new Blob([content], { type: mimeType });
+    // Hole die Datei als Blob
+    const blob = await response.blob();
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
@@ -130,6 +119,7 @@ const handleExport = async (format) => {
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
+    URL.revokeObjectURL(url);
   } catch (error) {
     console.error('Export failed:', error);
     alert('Export fehlgeschlagen. Bitte versuchen Sie es erneut.');
