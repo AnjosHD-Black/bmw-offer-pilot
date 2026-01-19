@@ -97,7 +97,7 @@ const handleExport = async (format) => {
       format: format === "xlsx" ? "excel" : "pdf"
     };
 
-    const response = await fetch("https://bmw-offer-backend.onrender.com/generate", {
+    const response = await fetch(`${BACKEND_URL}/generate`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
