@@ -130,7 +130,11 @@ const handleExport = async (format) => {
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
-  };
+  } catch (error) {
+    console.error('Export failed:', error);
+    alert('Export fehlgeschlagen. Bitte versuchen Sie es erneut.');
+  }
+};
 
   return (
     <div className="min-h-screen bg-slate-100 font-sans pb-20">
