@@ -86,6 +86,13 @@ def build_excel(vehicle_data: dict) -> str:
     underline(ws, f"A{row}")
     row += 1
 
+    # Write actual base vehicle data
+    for item in vehicle_data.get("base", []):
+        ws[f"B{row}"] = item.get("code", "")
+        ws[f"C{row}"] = item.get("text", "")
+        ws[f"E{row}"] = item.get("price", 0.0)
+        row += 1
+
     ws[f"A{row}"] = "Exterior Color"
     underline(ws, f"A{row}")
     row += 1
@@ -101,15 +108,28 @@ def build_excel(vehicle_data: dict) -> str:
 
     # ----- STANDARD EQUIPMENT -----
     ws[f"A{row}"] = "Standard Equipment"
-    row += 10  # Platzhalter
+    underline(ws, f"A{row}")
+    row += 1
+
+    # Write actual standard equipment data
+    for item in vehicle_data.get("standard", []):
+        ws[f"B{row}"] = item.get("code", "")
+        ws[f"C{row}"] = item.get("text", "")
+        ws[f"E{row}"] = item.get("price", 0.0)
+        row += 1
+
+    row += 1
 
     # ----- SECURITY EQUIPMENT -----
     ws[f"A{row}"] = "Security Equipment"
     underline(ws, f"A{row}")
     row += 1
 
-    for _ in range(6):
-        ws[f"C{row}"] = "Special security line"
+    # Write actual security equipment data
+    for item in vehicle_data.get("security", []):
+        ws[f"B{row}"] = item.get("code", "")
+        ws[f"C{row}"] = item.get("text", "")
+        ws[f"E{row}"] = item.get("price", 0.0)
         row += 1
 
     row += 2
@@ -126,7 +146,16 @@ def build_excel(vehicle_data: dict) -> str:
 
     ws[f"A{row}"] = "Optional Equipment"
     underline(ws, f"A{row}")
-    row += 10  # Platzhalter
+    row += 1
+
+    # Write actual optional equipment data
+    for item in vehicle_data.get("optional", []):
+        ws[f"B{row}"] = item.get("code", "")
+        ws[f"C{row}"] = item.get("text", "")
+        ws[f"E{row}"] = item.get("price", 0.0)
+        row += 1
+
+    row += 1
 
     ws[f"A{row}"] = "Technical Adjustments"
     underline(ws, f"A{row}")
@@ -134,25 +163,25 @@ def build_excel(vehicle_data: dict) -> str:
 
     ws[f"A{row}"] = "Editions"
     underline(ws, f"A{row}")
-    row += 2
-
-    ws[f"A{row}"] = "Deletions"
-    underline(ws, f"A{row}")
-    row += 2
-
-    bottom_border(ws, row)
-    row += 1
-
+    # Calculate subtotals
+    base_total = sum(item.get("price", 0) for item in vehicle_data.get("base", []))
+    security_total = sum(item.get("price", 0) for item in vehicle_data.get("security", []))
+    optional_total = sum(item.get("price", 0) for item in vehicle_data.get("optional", []))
+    
     ws[f"B{row}"] = "Basic Vehicle Price"
+    ws[f"E{row}"] = base_total
     row += 1
 
     ws[f"B{row}"] = "Security Package VR6"
+    ws[f"E{row}"] = security_total
     row += 1
 
     ws[f"B{row}"] = "Optional Equipment"
+    ws[f"E{row}"] = optional_total
     row += 1
 
     ws[f"B{row}"] = "Technical Adjustment"
+    ws[f"E{row}"] = 0.0
     row += 0
 
     bottom_border(ws, row)
@@ -160,6 +189,20 @@ def build_excel(vehicle_data: dict) -> str:
 
     ws[f"B{row}"] = "(Dropdown)"
     row += 1
+
+    ws[f"B{row}"] = "Transportation"
+    ws[f"E{row}"] = 0.0
+    row += 1
+
+    ws[f"B{row}"] = "Special Discount"
+    ws[f"E{row}"] = 0.0
+    bottom_border(ws, row)
+    row += 1
+
+    # Total price
+    total = vehicle_data.get("total_price", 0.0)
+    ws[f"B{row}"] = "Total Price"
+    ws[f"E{row}"] = total
 
     ws[f"B{row}"] = "Transportation"
     row += 1

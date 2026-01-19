@@ -104,5 +104,42 @@
   "3AD": {
     "label": "M Steering Wheel",
     "category": "optional"
+  },
+  
+  "3NK": {
+    "label": "M Sport Package",
+    "category": "optional"
+  },
+  "2MX": {
+    "label": "Sport Seats",
+    "category": "optional"
+  },
+  "322": {
+    "label": "Comfort Access",
+    "category": "optional"
+  },
+  "423": {
+    "label": "LED Headlights",
+    "category": "optional"
+  },
+  "494": {
+    "label": "Heating",
+    "category": "optional"
+  },
+  "5AS": {
+    "label": "Heads-Up Display",
+    "category": "optional"
+  },
+  "6AC": {
+    "label": "Adaptive Cruise Control",
+    "category": "optional"
+  },
+  "6FL": {
+    "label": "Active Protection",
+    "category": "optional"
+  },
+  "8TG": {
+    "label": "Night Vision",
+    "category": "optional"
   }
 }
