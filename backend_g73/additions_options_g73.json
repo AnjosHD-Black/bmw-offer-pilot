@@ -1,0 +1,27 @@
+[
+  {
+    "code": "ADD1",
+    "label": "Extended Warranty (2 Jahre)",
+    "price": 899.0
+  },
+  {
+    "code": "ADD2",
+    "label": "Paint Protection",
+    "price": 599.0
+  },
+  {
+    "code": "ADD3",
+    "label": "Interior Protection",
+    "price": 449.0
+  },
+  {
+    "code": "ADD4",
+    "label": "Maintenance Package (3 Jahre)",
+    "price": 1299.0
+  },
+  {
+    "code": "ADD5",
+    "label": "Tire & Wheel Protection",
+    "price": 349.0
+  }
+]

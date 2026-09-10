@@ -1,0 +1,19 @@
+{
+  "countries": [
+    {
+      "name": "Germany",
+      "pak": "111",
+      "client": "1234"
+    },
+    {
+      "name": "USA",
+      "pak": "3434",
+      "client": "7878"
+    },
+    {
+      "name": "France",
+      "pak": "6767",
+      "client": "9999"
+    }
+  ]
+}

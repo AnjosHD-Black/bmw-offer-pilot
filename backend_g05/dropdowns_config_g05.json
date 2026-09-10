@@ -1,0 +1,99 @@
+{
+  "dropdowns": [
+    {
+      "name": "Net Price",
+      "cell": "B{dropdown_1_row}",
+      "type": "list",
+      "values": [
+        "NET VEHICLE PRICE",
+        "NET VEHICLE PRICE WHS"
+      ],
+      "allow_blank": true,
+      "show_error_message": false
+    },
+    {
+      "name": "Total Price",
+      "cell": "B{dropdown_2_row}",
+      "type": "list",
+      "values": [
+        "TOTAL OFFER PRICE",
+        "TOTAL OFFER PRICE WHS"
+      ],
+      "allow_blank": true,
+      "show_error_message": false
+    },
+    {
+      "name": "Department",
+      "cell": "B5",
+      "type": "list",
+      "values": [
+        "CS-20/MH",
+        "CS-20/DW",
+        "CS-20/FR"
+      ],
+      "allow_blank": true,
+      "show_error_message": false
+    },
+    {
+      "name": "Number Type",
+      "cell": "A8",
+      "type": "list",
+      "values": [
+        "VIN",
+        "Order Nr.",
+        "Proforma Order Nr."
+      ],
+      "allow_blank": true,
+      "show_error_message": false
+    },
+    {
+      "name": "Countries",
+      "cell": "J5",
+      "type": "list",
+      "values": [
+        "dynamic"
+      ],
+      "allow_blank": true,
+      "show_error_message": false,
+      "note": "Values dynamically loaded from countries_list in vehicle_parser.py"
+    },
+    {
+      "name": "Price Currency E12",
+      "cell": "E12",
+      "type": "list",
+      "values": [
+        "Price | EUR",
+        "Price | USD",
+        "Price | ZAR",
+        "Price | NOK",
+        "Price | GBP",
+        "Price | WHS | EUR",
+        "Price | WHS | USD",
+        "Price | WHS | ZAR",
+        "Price | WHS | NOK",
+        "Price | WHS | GBP"
+      ],
+      "allow_blank": true,
+      "show_error_message": false
+    },
+    {
+      "name": "Price Currency F12",
+      "cell": "F12",
+      "type": "list",
+      "values": [
+        "Price | EUR",
+        "Price | USD",
+        "Price | ZAR",
+        "Price | NOK",
+        "Price | GBP",
+        "Price | WHS | EUR",
+        "Price | WHS | USD",
+        "Price | WHS | ZAR",
+        "Price | WHS | NOK",
+        "Price | WHS | GBP"
+      ],
+      "allow_blank": true,
+      "show_error_message": false
+    }
+  ]
+}

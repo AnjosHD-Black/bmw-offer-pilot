@@ -1,0 +1,7 @@
+{
+  "farben": ["300", "C64", "C5A", "475", "416", "C36", "C4P", "A96", "C3Z", "C4A", "C57"],
+  "reifen": ["10X", "10Y"],
+  "leder": ["VDMY", "VDSW", "VDF2", "VDFU"],
+  "trim": ["43E", "43B", "43D", "4DQ"],
+  "authority_codes": ["141", "144"]
+}

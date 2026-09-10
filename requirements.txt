@@ -1,5 +1,0 @@
-fastapi
-uvicorn
-openpyxl
-pydantic
-python-multipart

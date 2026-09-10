@@ -1,0 +1,179 @@
+{
+  "66GR": {
+    "label": "Basic Vehicle X5",
+    "category": "base_vehicle"
+  },
+
+  "ASS": {
+    "label": "Exterior Color Black",
+    "category": "exterior_color"
+  },
+  "AGG": {
+    "label": "Exterior Color Grey",
+    "category": "exterior_color"
+  },
+  "ARR": {
+    "label": "Exterior Color Red",
+    "category": "exterior_color"
+  },
+
+  "475": {
+    "label": "Black Sapphire Metallic",
+    "category": "exterior_color"
+  },
+
+  "ISS": {
+    "label": "Interior Color Black",
+    "category": "interior_color"
+  },
+  "IBB": {
+    "label": "Interior Color Brown",
+    "category": "interior_color"
+  },
+  "IWW": {
+    "label": "Interior Color White",
+    "category": "interior_color"
+  },
+
+  "VASW": {
+    "label": "BMW Individual Leather Trim Black",
+    "category": "interior_color"
+  },
+
+  "KPSW": {
+    "label": "Sensafin with Decor Stitching",
+    "category": "interior_color"
+  },
+
+  "4KH": {
+    "label": "Interior Trim Black",
+    "category": "interior_trim"
+  },
+  "4JK": {
+    "label": "Interior Trim Carbon",
+    "category": "interior_trim"
+  },
+  "4DZ": {
+    "label": "Interior Trim Sand",
+    "category": "interior_trim"
+  },
+
+  "1AB": {
+    "label": "Brakes",
+    "category": "standard"
+  },
+  "1AC": {
+    "label": "Floor Mats",
+    "category": "standard"
+  },
+  "1AD": {
+    "label": "Alloy Wheels",
+    "category": "standard"
+  },
+  "1AE": {
+    "label": "Summer Tires",
+    "category": "standard"
+  },
+  "1AF": {
+    "label": "Sun Protection",
+    "category": "standard"
+  },
+  "1AG": {
+    "label": "Sport Seats",
+    "category": "standard"
+  },
+  "1AH": {
+    "label": "Cruise Control",
+    "category": "standard"
+  },
+
+  "2AB": {
+    "label": "Underbody Protection",
+    "category": "security"
+  },
+  "2AC": {
+    "label": "Fire Extinguisher",
+    "category": "security"
+  },
+  "2AD": {
+    "label": "Security Glass",
+    "category": "security"
+  },
+  "2AE": {
+    "label": "Additional Armoring",
+    "category": "security"
+  },
+  "2AF": {
+    "label": "Standard Mounting",
+    "category": "security"
+  },
+
+  "141": {
+    "label": "ECE Siren Sequence",
+    "category": "security"
+  },
+
+  "144": {
+    "label": "US Siren Sequence",
+    "category": "security"
+  },
+
+  "109": {
+    "label": "Security Plus",
+    "category": "security_package"
+  },
+
+  "3AB": {
+    "label": "Seat Heating",
+    "category": "optional"
+  },
+  "3AC": {
+    "label": "Auxiliary Heating",
+    "category": "optional"
+  },
+  "3AD": {
+    "label": "M Steering Wheel",
+    "category": "optional"
+  },
+  
+  "3NK": {
+    "label": "M Sport Package",
+    "category": "optional"
+  },
+  "2MX": {
+    "label": "Sport Seats",
+    "category": "optional"
+  },
+  "322": {
+    "label": "Comfort Access",
+    "category": "optional"
+  },
+  "423": {
+    "label": "LED Headlights",
+    "category": "optional"
+  },
+  "494": {
+    "label": "Heating",
+    "category": "optional"
+  },
+  "5AS": {
+    "label": "Heads-Up Display",
+    "category": "optional"
+  },
+  "6AC": {
+    "label": "Adaptive Cruise Control",
+    "category": "optional"
+  },
+  "6FL": {
+    "label": "Active Protection",
+    "category": "optional"
+  },
+  "8TG": {
+    "label": "Night Vision",
+    "category": "optional"
+  },
+  "8R3": {
+    "label": "COC Additional Contents",
+    "category": "optional"
+  }
+}

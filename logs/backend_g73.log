@@ -1,0 +1,35 @@
+INFO:     Started server process [9025]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8002 (Press CTRL+C to quit)
+INFO:     127.0.0.1:61961 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61961 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:61963 - "GET /additions-options HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61969 - "GET /additions-options HTTP/1.1" 200 OK
+[DEBUG] insert_exterior_image called
+[DEBUG] image_mappings: {'farben': ['300', 'C64', 'C5A', '475', '416', 'C36', 'C4P'], 'reifen': ['10X', '10Y'], 'leder': ['VDMY', 'VDSW', 'VDF2', 'VDFU'], 'trim': ['43E', '43B', '43D', '4DQ'], 'authority_codes': ['141', '144']}
+[DEBUG] exterior_color: None
+[DEBUG] Farbe None not found in mappings, returning
+[DEBUG] insert_exterior_image called
+[DEBUG] image_mappings: {'farben': ['300', 'C64', 'C5A', '475', '416', 'C36', 'C4P'], 'reifen': ['10X', '10Y'], 'leder': ['VDMY', 'VDSW', 'VDF2', 'VDFU'], 'trim': ['43E', '43B', '43D', '4DQ'], 'authority_codes': ['141', '144']}
+[DEBUG] exterior_color: None
+[DEBUG] Farbe None not found in mappings, returning
+[DEBUG] insert_exterior_image called
+[DEBUG] image_mappings: {'farben': ['300', 'C64', 'C5A', '475', '416', 'C36', 'C4P'], 'reifen': ['10X', '10Y'], 'leder': ['VDMY', 'VDSW', 'VDF2', 'VDFU'], 'trim': ['43E', '43B', '43D', '4DQ'], 'authority_codes': ['141', '144']}
+[DEBUG] exterior_color: None
+[DEBUG] Farbe None not found in mappings, returning
+[DEBUG] insert_interior_image called
+[DEBUG] interior_color: None
+[DEBUG] Leder None not found in mappings
+[DEBUG] insert_interior_image called
+[DEBUG] interior_color: None
+[DEBUG] Leder None not found in mappings
+INFO:     127.0.0.1:61971 - "POST /generate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61976 - "GET /additions-options HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61978 - "GET /additions-options HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61980 - "GET /additions-options HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61986 - "GET /additions-options HTTP/1.1" 200 OK
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [9025]

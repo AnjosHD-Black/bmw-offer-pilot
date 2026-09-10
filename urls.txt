@@ -1,0 +1,20 @@
+Frontend:
+http://127.0.0.1:5173
+
+Backend G05:
+http://127.0.0.1:8001
+
+Backend G73:
+http://127.0.0.1:8002
+
+Backend Contract:
+http://127.0.0.1:8003
+
+Docs G05:
+http://127.0.0.1:8001/docs
+
+Docs G73:
+http://127.0.0.1:8002/docs
+
+Docs Contract:
+http://127.0.0.1:8003/docs
