@@ -183,8 +183,9 @@ def normalize_vehicle_input(
             base_buckets[category] = {
                 "code": code,
                 "text": text,
-                "price": 0.0
+                "price": priced_prices.get(code, 0.0)
             }
+            result["total_price"] += priced_prices.get(code, 0.0)
             continue
 
     result.update(base_buckets)

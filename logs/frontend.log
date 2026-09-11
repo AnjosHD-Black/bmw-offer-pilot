@@ -3,43 +3,7 @@
 > vite --host 127.0.0.1 --port 5173
 
 
-  VITE v7.3.1  ready in 580 ms
+  VITE v7.3.1  ready in 499 ms
 
   ➜  Local:   http://127.0.0.1:5173/
-Browserslist: browsers data (caniuse-lite) is 8 months old. Please run:
-  npx update-browserslist-db@latest
-  Why you should do it regularly: https://github.com/browserslist/update-db#readme
-3:52:11 PM [vite] http proxy error: /additions-options
-Error: connect ECONNREFUSED 127.0.0.1:8000
-    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
-3:52:11 PM [vite] http proxy error: /additions-options
-Error: connect ECONNREFUSED 127.0.0.1:8000
-    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
-4:02:54 PM [vite] http proxy error: /additions-options
-Error: connect ECONNREFUSED 127.0.0.1:8000
-    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
-4:02:55 PM [vite] http proxy error: /additions-options
-Error: connect ECONNREFUSED 127.0.0.1:8000
-    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
-4:03:16 PM [vite] http proxy error: /additions-options
-Error: connect ECONNREFUSED 127.0.0.1:8000
-    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
-4:03:16 PM [vite] http proxy error: /additions-options
-Error: connect ECONNREFUSED 127.0.0.1:8000
-    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
-4:04:08 PM [vite] http proxy error: /additions-options
-Error: connect ECONNREFUSED 127.0.0.1:8000
-    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
-4:04:13 PM [vite] http proxy error: /generate
-Error: connect ECONNREFUSED 127.0.0.1:8000
-    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
-4:04:57 PM [vite] http proxy error: /additions-options
-Error: connect ECONNREFUSED 127.0.0.1:8000
-    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
-4:05:21 PM [vite] http proxy error: /additions-options
-Error: connect ECONNREFUSED 127.0.0.1:8000
-    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
-4:06:24 PM [vite] vite.config.js changed, restarting server...
-4:06:25 PM [vite] server restarted.
-4:08:18 PM [vite] vite.config.js changed, restarting server...
-4:08:19 PM [vite] server restarted.
+  ➜  press h + enter to show help
