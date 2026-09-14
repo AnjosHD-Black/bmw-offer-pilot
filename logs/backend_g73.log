@@ -52,3 +52,10 @@ INFO:     127.0.0.1:49914 - "GET /additions-options HTTP/1.1" 200 OK
 [DEBUG] Interior image loaded, original size - Height: 768, Width: 1280
 [DEBUG] Interior image right-aligned to E95
 INFO:     127.0.0.1:49921 - "POST /generate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50287 - "POST /debug/parse HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50292 - "GET /additions-options HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50298 - "POST /debug/parse HTTP/1.1" 200 OK
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [7424]

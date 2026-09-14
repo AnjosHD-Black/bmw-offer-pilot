@@ -5,8 +5,30 @@ from typing import List, Dict
 # PRICE LINE PARSER
 # ======================================================
 PRICE_LINE_REGEX = re.compile(
-    r"^(?P<code>[A-Z0-9]{3,4})\s+(?P<text>.+?)\s+(?P<price>\d+(?:[.,]\d+)?)$"
+    r"^(?P<code>[A-Za-z0-9]{3,6})\s+(?P<text>.+?)\s+(?P<price>\d+(?:[.,]\d+)?)$"
 )
+
+
+def _resolve_price_code(raw_code: str, known_codes=None) -> str:
+    """
+    Manche Systeme liefern 6-stellige Codes vor dem Preis, wobei nur die
+    letzten 3 oder 4 Zeichen der eigentliche Options-Code sind
+    (z.B. '1406AC' -> '6AC'). Die ersten 2 oder 3 Zeichen werden ignoriert.
+    """
+    code = raw_code.strip().upper()
+    if len(code) != 6:
+        return code
+
+    last_four = code[2:]
+    last_three = code[3:]
+
+    if known_codes:
+        if last_four in known_codes:
+            return last_four
+        if last_three in known_codes:
+            return last_three
+
+    return last_four
 
 
 def _normalize_codes(codes: List[str]) -> List[str]:
@@ -30,11 +52,12 @@ def _normalize_codes(codes: List[str]) -> List[str]:
     return normalized
 
 
-def parse_priced_lines(lines: List[str]) -> Dict[str, float]:
+def parse_priced_lines(lines: List[str], known_codes=None) -> Dict[str, float]:
     """
     Extrahiert Preise aus z.B.:
     '3AB Sitzheizung 100'
     '3AD M-Lenkrad 3000'
+    '1406AC Sonderausstattung 100' (6-stellig, nur '6AC' zaehlt)
 
     Wenn keine Preise angegeben sind, ignoriere die Zeile.
     """
@@ -49,7 +72,7 @@ def parse_priced_lines(lines: List[str]) -> Dict[str, float]:
         if not match:
             continue
 
-        code = match.group("code").upper()
+        code = _resolve_price_code(match.group("code"), known_codes)
         price = float(match.group("price").replace(",", "."))
         prices[code] = price
 
@@ -81,7 +104,8 @@ def normalize_vehicle_input(
     """
 
     normalized_all_codes = _normalize_codes(all_codes)
-    priced_prices = parse_priced_lines(priced_lines)
+    known_codes = set(normalized_all_codes) | set(options_meta.keys())
+    priced_prices = parse_priced_lines(priced_lines, known_codes=known_codes)
 
     invalid_priced_codes = []
     seen_invalid = set()
@@ -97,7 +121,7 @@ def normalize_vehicle_input(
         if not match:
             continue
 
-        code = match.group("code").upper()
+        code = _resolve_price_code(match.group("code"), known_codes)
         if code in normalized_all_codes or re.fullmatch(r"ADD\d+", code):
             continue
 
@@ -138,7 +162,8 @@ def normalize_vehicle_input(
         "interior_trim": None,
     }
 
-    for code in all_codes:
+    for raw_code in all_codes:
+        code = raw_code.strip().upper() if isinstance(raw_code, str) else raw_code
         meta = options_meta.get(code)
         if not meta:
             continue
@@ -179,7 +204,8 @@ def normalize_vehicle_input(
     # ----------------------------
     # ALL OTHER CODES (NICHT BASE)
     # ----------------------------
-    for code in all_codes:
+    for raw_code in all_codes:
+        code = raw_code.strip().upper() if isinstance(raw_code, str) else raw_code
         meta = options_meta.get(code)
         if not meta:
             continue
