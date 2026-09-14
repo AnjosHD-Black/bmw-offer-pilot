@@ -5,8 +5,35 @@ from typing import List, Dict
 # PRICE LINE PARSER
 # ======================================================
 PRICE_LINE_REGEX = re.compile(
-    r"^(?P<code>[A-Za-z0-9]{3,6})\s+(?P<text>.+?)\s+(?P<price>\d+(?:[.,]\d+)?)$"
+    r"^(?P<code>[A-Za-z0-9]{3,6})\s+(?P<text>.+?)\s+(?P<price>\d[\d.,]*\d|\d)$"
 )
+
+
+def _parse_price(raw: str) -> float:
+    """
+    Wandelt Preistexte in Zahlen um, egal ob mit Tausenderpunkt
+    ('1.999,00'), englischem Format ('1,999.00') oder ohne Trenner
+    ('1999.00', '8989898') geschrieben.
+    """
+    value = raw.strip()
+
+    if "." in value and "," in value:
+        if value.rfind(",") > value.rfind("."):
+            value = value.replace(".", "").replace(",", ".")
+        else:
+            value = value.replace(",", "")
+    elif "," in value:
+        last_group = value.split(",")[-1]
+        if len(last_group) == 3:
+            value = value.replace(",", "")
+        else:
+            value = value.replace(",", ".")
+    elif "." in value:
+        last_group = value.split(".")[-1]
+        if len(last_group) == 3:
+            value = value.replace(".", "")
+
+    return float(value)
 
 
 def _resolve_price_code(raw_code: str, known_codes=None) -> str:
@@ -73,7 +100,7 @@ def parse_priced_lines(lines: List[str], known_codes=None) -> Dict[str, float]:
             continue
 
         code = _resolve_price_code(match.group("code"), known_codes)
-        price = float(match.group("price").replace(",", "."))
+        price = _parse_price(match.group("price"))
         prices[code] = price
 
     return prices
