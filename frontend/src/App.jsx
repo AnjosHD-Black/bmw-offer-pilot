@@ -286,7 +286,9 @@ const handleExcelImport = async (file) => {
 };
 
   return (
-    <div className="app-shell">
+    <div className={`app-shell ${
+      isContractMode ? '' : activeCar === 'A' ? 'app-shell--g05' : 'app-shell--g73'
+    }`}>
       
       {/* Header Bereich */}
       <nav className="top-bar">
