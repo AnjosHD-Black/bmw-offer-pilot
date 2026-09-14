@@ -209,8 +209,11 @@ def normalize_vehicle_input(
         result["unknown_codes"].append(code)
 
     # ----------------------------
-    # BASE VEHICLE (separate buckets)
+    # CODES AUFLOESEN (mit Vorkommen-Logik fuer mehrdeutige Codes)
     # ----------------------------
+    # Manche Codes bedeuten je nach Vorkommen etwas anderes, z.B. '416'
+    # beim ersten Mal Standard-Ausstattung, beim zweiten Mal die Farbe.
+    # options_meta kann dafuer statt eines dicts eine Liste von dicts enthalten.
     base_buckets = {
         "base_vehicle": None,
         "exterior_color": None,
@@ -218,52 +221,48 @@ def normalize_vehicle_input(
         "interior_trim": None,
     }
 
+    occurrence_counts: Dict[str, int] = {}
+    total_occurrences: Dict[str, int] = {}
     for raw_code in all_codes:
         code = raw_code.strip().upper() if isinstance(raw_code, str) else raw_code
-        meta = options_meta.get(code)
-        if not meta:
-            continue
+        total_occurrences[code] = total_occurrences.get(code, 0) + 1
 
-        category = meta.get("category")
-        if category in base_buckets:
-            text = (
-                meta.get("text")
-                or meta.get("label")
-                or meta.get("description")
-                or code
-            )
-
-            base_buckets[category] = {
-                "code": code,
-                "text": text,
-                "price": priced_prices.get(code, 0.0)
-            }
-            result["total_price"] += priced_prices.get(code, 0.0)
-            continue
-
-    result.update(base_buckets)
-
-    # ----------------------------
-    # ALL OTHER CODES (NICHT BASE)
-    # ----------------------------
     for raw_code in all_codes:
         code = raw_code.strip().upper() if isinstance(raw_code, str) else raw_code
-        meta = options_meta.get(code)
-        if not meta:
+        meta_entry = options_meta.get(code)
+        if not meta_entry:
             continue
+
+        occurrence_index = occurrence_counts.get(code, 0)
+        occurrence_counts[code] = occurrence_index + 1
+
+        if isinstance(meta_entry, list):
+            if not meta_entry:
+                continue
+            meta = meta_entry[min(occurrence_index, len(meta_entry) - 1)]
+        else:
+            meta = meta_entry
 
         category = meta.get("category")
-        if category in base_buckets:
-            continue
-
         text = (
             meta.get("text")
             or meta.get("label")
             or meta.get("description")
             or code
         )
+        # Bei mehrdeutigen Codes (mehrfach in all_codes) bekommt nur das
+        # letzte Vorkommen den eingegebenen Preis, alle davor sind 0.0.
+        is_last_occurrence = occurrence_index == total_occurrences[code] - 1
+        price = priced_prices.get(code, 0.0) if is_last_occurrence else 0.0
 
-        price = priced_prices.get(code, 0.0)
+        if category in base_buckets:
+            base_buckets[category] = {
+                "code": code,
+                "text": text,
+                "price": price
+            }
+            result["total_price"] += price
+            continue
 
         item = {
             "code": code,
@@ -279,5 +278,7 @@ def normalize_vehicle_input(
             result["security"].append(item)
 
         result["total_price"] += price
+
+    result.update(base_buckets)
 
     return result

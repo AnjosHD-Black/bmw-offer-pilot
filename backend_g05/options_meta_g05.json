@@ -17,6 +17,17 @@
     "category": "exterior_color"
   },
 
+  "300": [
+    {
+      "label": "Spearwheel",
+      "category": "standard"
+    },
+    {
+      "label": "Weiß",
+      "category": "exterior_color"
+    }
+  ],
+
   "475": {
     "label": "Black Sapphire Metallic",
     "category": "exterior_color"

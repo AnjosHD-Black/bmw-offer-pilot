@@ -20,10 +20,16 @@
     "label": "Black metallic",
     "category": "exterior_color"
   },
-  "416": {
-    "label": "Carbon Black metallic",
-    "category": "exterior_color"
-  },
+  "416": [
+    {
+      "label": "Roller sunblindes",
+      "category": "standard"
+    },
+    {
+      "label": "Carbon Black metallic",
+      "category": "exterior_color"
+    }
+  ],
   "C36": {
     "label": "Dravit Gray metallic",
     "category": "exterior_color"
