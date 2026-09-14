@@ -155,3 +155,66 @@ INFO:     127.0.0.1:64456 - "POST /generate HTTP/1.1" 200 OK
 [DEBUG] interior_color: None
 [DEBUG] Leder None not found in mappings
 INFO:     127.0.0.1:64458 - "POST /generate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64672 - "GET /additions-options HTTP/1.1" 200 OK
+[DEBUG] insert_exterior_image called
+[DEBUG] image_mappings: {'farben': ['300', 'C64', 'C5A', '475', '416', 'C36', 'C4P', 'A96', 'C3Z', 'C4A', 'C57'], 'reifen': ['10X', '10Y'], 'leder': ['VDMY', 'VDSW', 'VDF2', 'VDFU'], 'trim': ['43E', '43B', '43D', '4DQ'], 'authority_codes': ['141', '144']}
+[DEBUG] exterior_color: None
+[DEBUG] Farbe None not found in mappings, returning
+[DEBUG] insert_exterior_image called
+[DEBUG] image_mappings: {'farben': ['300', 'C64', 'C5A', '475', '416', 'C36', 'C4P', 'A96', 'C3Z', 'C4A', 'C57'], 'reifen': ['10X', '10Y'], 'leder': ['VDMY', 'VDSW', 'VDF2', 'VDFU'], 'trim': ['43E', '43B', '43D', '4DQ'], 'authority_codes': ['141', '144']}
+[DEBUG] exterior_color: None
+[DEBUG] Farbe None not found in mappings, returning
+[DEBUG] insert_exterior_image called
+[DEBUG] image_mappings: {'farben': ['300', 'C64', 'C5A', '475', '416', 'C36', 'C4P', 'A96', 'C3Z', 'C4A', 'C57'], 'reifen': ['10X', '10Y'], 'leder': ['VDMY', 'VDSW', 'VDF2', 'VDFU'], 'trim': ['43E', '43B', '43D', '4DQ'], 'authority_codes': ['141', '144']}
+[DEBUG] exterior_color: None
+[DEBUG] Farbe None not found in mappings, returning
+[DEBUG] insert_interior_image called
+[DEBUG] interior_color: None
+[DEBUG] Leder None not found in mappings
+[DEBUG] insert_interior_image called
+[DEBUG] interior_color: None
+[DEBUG] Leder None not found in mappings
+INFO:     127.0.0.1:64674 - "POST /generate HTTP/1.1" 200 OK
+[DEBUG] insert_exterior_image called
+[DEBUG] image_mappings: {'farben': ['300', 'C64', 'C5A', '475', '416', 'C36', 'C4P', 'A96', 'C3Z', 'C4A', 'C57'], 'reifen': ['10X', '10Y'], 'leder': ['VDMY', 'VDSW', 'VDF2', 'VDFU'], 'trim': ['43E', '43B', '43D', '4DQ'], 'authority_codes': ['141', '144']}
+[DEBUG] exterior_color: {'code': '416', 'text': 'Carbon Black metallic', 'price': 500.0}
+[DEBUG] No reifen code found, using default 10X
+[DEBUG] Using farbe=416, reifen=10X
+[DEBUG] has_authority=False, variant=private
+[DEBUG] Looking for: 416_10X_private_front.jpg
+[DEBUG] Full path: /Users/antonschwarz/Desktop/Test/backend_g73/images/416_10X_private_front.jpg
+[DEBUG] Image found, adding to worksheet
+[DEBUG] Image loaded, original size - Height: 60, Width: 100
+[DEBUG] Setting image size: 196px × 118px
+[DEBUG] Image added to D3
+[DEBUG] insert_exterior_image called
+[DEBUG] image_mappings: {'farben': ['300', 'C64', 'C5A', '475', '416', 'C36', 'C4P', 'A96', 'C3Z', 'C4A', 'C57'], 'reifen': ['10X', '10Y'], 'leder': ['VDMY', 'VDSW', 'VDF2', 'VDFU'], 'trim': ['43E', '43B', '43D', '4DQ'], 'authority_codes': ['141', '144']}
+[DEBUG] exterior_color: {'code': '416', 'text': 'Carbon Black metallic', 'price': 500.0}
+[DEBUG] No reifen code found, using default 10X
+[DEBUG] Using farbe=416, reifen=10X
+[DEBUG] has_authority=False, variant=private
+[DEBUG] Looking for: 416_10X_private_front.jpg
+[DEBUG] Full path: /Users/antonschwarz/Desktop/Test/backend_g73/images/416_10X_private_front.jpg
+[DEBUG] Image found, adding to worksheet
+[DEBUG] Image loaded, original size - Height: 60, Width: 100
+[DEBUG] Setting image size: 906px × 544px
+[DEBUG] Image added to A45
+[DEBUG] insert_exterior_image called
+[DEBUG] image_mappings: {'farben': ['300', 'C64', 'C5A', '475', '416', 'C36', 'C4P', 'A96', 'C3Z', 'C4A', 'C57'], 'reifen': ['10X', '10Y'], 'leder': ['VDMY', 'VDSW', 'VDF2', 'VDFU'], 'trim': ['43E', '43B', '43D', '4DQ'], 'authority_codes': ['141', '144']}
+[DEBUG] exterior_color: {'code': '416', 'text': 'Carbon Black metallic', 'price': 500.0}
+[DEBUG] No reifen code found, using default 10X
+[DEBUG] Using farbe=416, reifen=10X
+[DEBUG] has_authority=False, variant=private
+[DEBUG] Looking for: 416_10X_private_rear.jpg
+[DEBUG] Full path: /Users/antonschwarz/Desktop/Test/backend_g73/images/416_10X_private_rear.jpg
+[DEBUG] Image found, adding to worksheet
+[DEBUG] Image loaded, original size - Height: 60, Width: 100
+[DEBUG] Setting image size: 906px × 544px
+[DEBUG] Image added to A87
+[DEBUG] insert_interior_image called
+[DEBUG] interior_color: None
+[DEBUG] Leder None not found in mappings
+[DEBUG] insert_interior_image called
+[DEBUG] interior_color: None
+[DEBUG] Leder None not found in mappings
+INFO:     127.0.0.1:64783 - "POST /generate HTTP/1.1" 200 OK

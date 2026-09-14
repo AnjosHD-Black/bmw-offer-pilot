@@ -209,3 +209,37 @@ INFO:     127.0.0.1:64479 - "GET /additions-options HTTP/1.1" 200 OK
 INFO:     127.0.0.1:64480 - "GET /additions-options HTTP/1.1" 200 OK
 INFO:     127.0.0.1:64485 - "GET /additions-options HTTP/1.1" 200 OK
 INFO:     127.0.0.1:64486 - "GET /additions-options HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64588 - "GET /additions-options HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64590 - "GET /additions-options HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64595 - "GET /additions-options HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64596 - "GET /additions-options HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64654 - "GET /additions-options HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64658 - "GET /additions-options HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64660 - "GET /additions-options HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64661 - "GET /additions-options HTTP/1.1" 200 OK
+[DEBUG] insert_exterior_image called
+[DEBUG] image_mappings: {'475': ['475_exterior_1_Vorderansicht.jpg', '475_exterior_2_Hinteransicht.jpg'], '475_authority': ['475_Authority_1_Vorderansicht.jpg', '475_Authority_2_Hinteransicht.jpg'], 'VASW': ['VASW_interior_1.jpg', 'VASW_interior_2.jpg'], 'KPSW': ['KPSW_interior_1.jpg', 'KPSW_interior_2.jpg']}
+[DEBUG] exterior_color: {'code': '300', 'text': 'Weiß', 'price': 500.0}
+[DEBUG] dict check: has_475=False
+[DEBUG] No 475 found, returning
+[DEBUG] insert_exterior_image called
+[DEBUG] image_mappings: {'475': ['475_exterior_1_Vorderansicht.jpg', '475_exterior_2_Hinteransicht.jpg'], '475_authority': ['475_Authority_1_Vorderansicht.jpg', '475_Authority_2_Hinteransicht.jpg'], 'VASW': ['VASW_interior_1.jpg', 'VASW_interior_2.jpg'], 'KPSW': ['KPSW_interior_1.jpg', 'KPSW_interior_2.jpg']}
+[DEBUG] exterior_color: {'code': '300', 'text': 'Weiß', 'price': 500.0}
+[DEBUG] dict check: has_475=False
+[DEBUG] No 475 found, returning
+[DEBUG] insert_exterior_image called
+[DEBUG] image_mappings: {'475': ['475_exterior_1_Vorderansicht.jpg', '475_exterior_2_Hinteransicht.jpg'], '475_authority': ['475_Authority_1_Vorderansicht.jpg', '475_Authority_2_Hinteransicht.jpg'], 'VASW': ['VASW_interior_1.jpg', 'VASW_interior_2.jpg'], 'KPSW': ['KPSW_interior_1.jpg', 'KPSW_interior_2.jpg']}
+[DEBUG] exterior_color: {'code': '300', 'text': 'Weiß', 'price': 500.0}
+[DEBUG] dict check: has_475=False
+[DEBUG] No 475 found, returning
+[DEBUG] insert_interior_image called
+[DEBUG] interior_color: None
+[DEBUG] No matching interior code found
+[DEBUG] insert_interior_image called
+[DEBUG] interior_color: None
+[DEBUG] No matching interior code found
+INFO:     127.0.0.1:64784 - "POST /generate HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64812 - "GET /additions-options HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64813 - "GET /additions-options HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64815 - "GET /additions-options HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64817 - "GET /additions-options HTTP/1.1" 200 OK

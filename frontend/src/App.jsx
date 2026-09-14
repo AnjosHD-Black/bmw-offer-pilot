@@ -108,12 +108,12 @@ export default function App() {
   const salesPerson = { name: "Max Mustermann", id: "ADMIN-01" };
 
   // --- ADDITIONS HANDLER ---
-  const handleAdditionsChange = (selectedAdditions) => {
+  const handleAdditionsChange = useCallback((selectedAdditions) => {
     setActiveCarState(prev => ({
       ...prev,
       additions: selectedAdditions
     }));
-  };
+  }, [setActiveCarState]);
 
   // --- KALKULATION (für Export-Protokoll) ---
   const calculation = useMemo(() => {
