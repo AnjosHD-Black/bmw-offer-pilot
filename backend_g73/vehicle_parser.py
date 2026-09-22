@@ -162,6 +162,10 @@ def normalize_vehicle_input(
     known_codes = set(normalized_all_codes) | set(options_meta.keys())
     priced_prices = parse_priced_lines(priced_lines, known_codes=known_codes)
     additions = parse_additions_from_priced_lines(priced_lines)
+    total_occurrences: Dict[str, int] = {}
+    for raw_code in all_codes:
+        code = raw_code.strip().upper() if isinstance(raw_code, str) else raw_code
+        total_occurrences[code] = total_occurrences.get(code, 0) + 1
 
     invalid_priced_codes = []
     seen_invalid = set()
@@ -178,7 +182,14 @@ def normalize_vehicle_input(
             continue
 
         code = _resolve_price_code(match.group("code"), known_codes)
-        if code in normalized_all_codes or re.fullmatch(r"ADD\d+", code):
+        ambiguous_meta = options_meta.get(code)
+        is_single_ambiguous_code = (
+            isinstance(ambiguous_meta, list)
+            and total_occurrences.get(code, 0) == 1
+        )
+        if code in normalized_all_codes and not is_single_ambiguous_code:
+            continue
+        if re.fullmatch(r"ADD\d+", code):
             continue
 
         if code in seen_invalid:
@@ -222,11 +233,6 @@ def normalize_vehicle_input(
     }
 
     occurrence_counts: Dict[str, int] = {}
-    total_occurrences: Dict[str, int] = {}
-    for raw_code in all_codes:
-        code = raw_code.strip().upper() if isinstance(raw_code, str) else raw_code
-        total_occurrences[code] = total_occurrences.get(code, 0) + 1
-
     for raw_code in all_codes:
         code = raw_code.strip().upper() if isinstance(raw_code, str) else raw_code
         meta_entry = options_meta.get(code)
@@ -253,7 +259,12 @@ def normalize_vehicle_input(
         # Bei mehrdeutigen Codes (mehrfach in all_codes) bekommt nur das
         # letzte Vorkommen den eingegebenen Preis, alle davor sind 0.0.
         is_last_occurrence = occurrence_index == total_occurrences[code] - 1
-        price = priced_prices.get(code, 0.0) if is_last_occurrence else 0.0
+        is_ambiguous_code = isinstance(meta_entry, list)
+        price = (
+            priced_prices.get(code, 0.0)
+            if is_last_occurrence and (not is_ambiguous_code or total_occurrences[code] > 1)
+            else 0.0
+        )
 
         if category in base_buckets:
             base_buckets[category] = {
