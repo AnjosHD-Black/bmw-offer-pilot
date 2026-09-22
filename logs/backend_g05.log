@@ -3,3 +3,11 @@ INFO:     Waiting for application startup.
 INFO:     Application startup complete.
 INFO:     Uvicorn running on http://127.0.0.1:8001 (Press CTRL+C to quit)
 INFO:     127.0.0.1:49356 - "POST /debug/parse HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49409 - "GET /additions-options HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49411 - "GET /additions-options HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49416 - "GET /additions-options HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49417 - "GET /additions-options HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49627 - "GET /additions-options HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49628 - "GET /additions-options HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49629 - "GET /additions-options HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49630 - "GET /additions-options HTTP/1.1" 200 OK

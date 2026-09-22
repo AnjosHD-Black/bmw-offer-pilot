@@ -245,7 +245,16 @@ def normalize_vehicle_input(
         if isinstance(meta_entry, list):
             if not meta_entry:
                 continue
-            meta = meta_entry[min(occurrence_index, len(meta_entry) - 1)]
+            if occurrence_index == 0:
+                meta = next(
+                    (entry for entry in meta_entry if entry.get("category") == "standard"),
+                    meta_entry[0]
+                )
+            else:
+                meta = next(
+                    (entry for entry in meta_entry if entry.get("category") == "exterior_color"),
+                    meta_entry[-1]
+                )
         else:
             meta = meta_entry
 
